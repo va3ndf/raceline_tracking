@@ -12,6 +12,8 @@ from controller import lower_controller, controller
 class Simulator:
 
     def __init__(self, rt : RaceTrack):
+        self.ticks = 0
+        
         matplotlib.rcParams["figure.dpi"] = 300
         matplotlib.rcParams["font.size"] = 8
 
@@ -66,8 +68,11 @@ class Simulator:
             self.currently_violating = False
 
     def run(self):
+        self.ticks += 1
+
         try:
             if self.lap_finished:
+                print(self.ticks)
                 exit()
 
             self.figure.canvas.flush_events()
@@ -120,9 +125,10 @@ class Simulator:
         if progress > 10.0 and not self.lap_started:
             self.lap_started = True
     
-        if progress <= 1.0 and self.lap_started and not self.lap_finished:
+        if progress <= 10.0 and self.lap_started and not self.lap_finished:
             self.lap_finished = True
             self.lap_time_elapsed = time() - self.lap_start_time
+            print(self.lap_time_elapsed)
 
         if not self.lap_finished and self.lap_start_time is not None:
             self.lap_time_elapsed = time() - self.lap_start_time
